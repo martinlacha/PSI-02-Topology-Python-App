@@ -69,7 +69,7 @@ def find_topology():
     snmp_engine = SnmpEngine()
 
     # SNMP request to retrieve routing table (OID: 1.3.6.1.2.1.4.21.1)
-    var_binds = nextCmd(snmp_engine, CommunityData(communityName=community), UdpTransportTarget((router_ip, 161)),
+    var_binds = nextCmd(snmp_engine, CommunityData(community), UdpTransportTarget((router_ip, 161)),
                         ContextData(), ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')), lexicographicMode=False)
 
     # Process SNMP response
