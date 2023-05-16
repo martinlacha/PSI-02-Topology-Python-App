@@ -5,7 +5,19 @@ from scapy.layers.l2 import Ether
 from pysnmp.hlapi import *
 
 router_ip = None
+args = sys.argv
+community = "public"
 
+expected_arguments = 2
+community_cli_index = 1
+
+def check_cli_args():
+    global community
+    if len(args) != expected_arguments:
+        print(f"Invalid count of CLI arguments Expected: {expected_arguments}, Got: {len(args)}")
+        print(f"Usage: python3 main.py <community>")
+        exit(1)
+    community = args[community_cli_index]
 
 def get_router_ip():
     global router_ip
@@ -17,8 +29,8 @@ def get_router_ip():
     gw = conf.route.route('0.0.0.0')
     router_ip = gw[2]
     print(gw)
+    print(f"Router IP: {router_ip}")
     print("----------------------------------------")
-
     '''
     # Define a DHCP request packet
     dhcp_discover = Ether(dst="ff:ff:ff:ff:ff:ff") / IP(src="0.0.0.0", dst="255.255.255.255") / UDP(sport=68, dport=67) / \
@@ -37,6 +49,7 @@ def get_router_ip():
                         break
     '''
                         
+
 def get_ip():
     router_ip = None
     # Create a DHCP discover packet
@@ -48,6 +61,7 @@ def get_ip():
         router_ip = response[IP].src
     return router_ip
 
+
 def find_topology():
     print("----------------- Topology -----------------")
     routing_table = []
@@ -55,17 +69,17 @@ def find_topology():
     snmp_engine = SnmpEngine()
 
     # SNMP request to retrieve routing table (OID: 1.3.6.1.2.1.4.21.1)
-    var_binds = nextCmd(snmp_engine, CommunityData('public'), UdpTransportTarget((router_ip, 161)),
+    var_binds = nextCmd(snmp_engine, CommunityData(communityName=community), UdpTransportTarget((router_ip, 161)),
                         ContextData(), ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')), lexicographicMode=False)
 
     # Process SNMP response
     for error_indication, error_status, error_index, var_bind_table in var_binds:
         if error_indication:
-            print(f"Error: {error_indication}")
+            print(f"Error indicator: {error_indication}")
             return routing_table
 
         if error_status:
-            print(f"Error: {error_status.prettyPrint()}")
+            print(f"Error status: {error_status.prettyPrint()}")
             return routing_table
 
         # Extract routing table information
@@ -81,9 +95,11 @@ def find_topology():
 
     print("--------------------------------------------")
     print(routing_table)
+    return routing_table
 
 
 if __name__ == "__main__":
+    check_cli_args()
     get_router_ip()
     find_topology()
 
