@@ -72,6 +72,8 @@ def find_topology():
     var_binds = nextCmd(snmp_engine, CommunityData(community), UdpTransportTarget((router_ip, 161)),
                         ContextData(), ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')), lexicographicMode=False)
 
+    print(f"-----------------------var_binds---------------------------")
+    print(f"{var_bind}")
     # Process SNMP response
     for error_indication, error_status, error_index, var_bind_table in var_binds:
         if error_indication:
