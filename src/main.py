@@ -31,17 +31,19 @@ def get_router_ip():
     print(gw)
     print(f"Router IP from config: {router_ip}")
     print(f"Send DHCP discover")
-    response = dhcp_request()
+    dhcp_offer = dhcp_request()
+    dhcp_offer.display()
     
     # Process the DHCP response packets
-    for index, msg in enumerate(response):
-        for packet in response[index]:
+    for index, msg in enumerate(dhcp_offer):
+        for packet in dhcp_offer[index]:
             if DHCP in packet and packet[DHCP].options[0][1] == 2:  # DHCP Offer packet
                 for option in packet[DHCP].options:
                     if isinstance(option, tuple) and option[0] == 'router':
                         router_ip = option[1]
                         print(f"Router IP from DHCP discover packet: {router_ip}")
                         return
+                    
                         
 
 def get_ip():
