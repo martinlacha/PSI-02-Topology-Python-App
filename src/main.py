@@ -29,7 +29,7 @@ def get_router_ip():
     gw = conf.route.route('0.0.0.0')
     router_ip = gw[2]
     print(gw)
-    print(f"Router IP: {router_ip}")
+    print(f"Router IP from config: {router_ip}")
     print(f"Send DHCP discover")
     response = dhcp_request()
     
@@ -40,7 +40,8 @@ def get_router_ip():
                 for option in packet[DHCP].options:
                     if isinstance(option, tuple) and option[0] == 'router':
                         router_ip = option[1]
-                        break
+                        print(f"Router IP from DHCP discover packet: {router_ip}")
+                        return
                         
 
 def get_ip():
