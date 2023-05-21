@@ -53,9 +53,9 @@ def find_topology():
                         CommunityData(community), 
                         UdpTransportTarget((router_ip, 161)),
                         ContextData(),
-                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysName', 0)))
-                        #ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')),
-                        #lexicographicMode=False)
+                        #ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysName', 0)))
+                        ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')),
+                        lexicographicMode=False)
 
     # Process SNMP response
     for error_indication, error_status, error_index, var_bind_table in var_binds:
@@ -74,7 +74,6 @@ def find_topology():
 
             # Process each entry in the routing table
             if str(oid).startswith('1.3.6.1.2.1.4.21.1.7'):  # OID for routing table entry
-
                 print(f"oid: {str(oid)}")
                 index = str(oid).split('.')[-1]
                 route_entry = f"Index: {index}, Next Hop: {value}"
