@@ -1,8 +1,9 @@
 from scapy.all import *
-from scapy.layers.dhcp import BOOTP, DHCP
+from scapy.layers.dhcp import BOOTP, DHCP, dhcp_request
 from scapy.layers.inet import IP, UDP
 from scapy.layers.l2 import Ether
 from pysnmp.hlapi import *
+from snmpy import snmp_get, snmp_walk
 
 router_ip = None
 args = sys.argv
@@ -31,6 +32,9 @@ def get_router_ip():
     print(gw)
     print(f"Router IP: {router_ip}")
     print("----------------------------------------")
+    dhcp_response = dhcp_request(req_type='request', requested_addr='10.0.1.254')
+    print(f"dhcp_response: {dhcp_response}")
+    
     '''
     # Define a DHCP request packet
     dhcp_discover = Ether(dst="ff:ff:ff:ff:ff:ff") / IP(src="0.0.0.0", dst="255.255.255.255") / UDP(sport=68, dport=67) / \
@@ -66,14 +70,16 @@ def find_topology():
     print("----------------- Topology -----------------")
     routing_table = []
     # SNMP parameters
-    snmp_engine = SnmpEngine()
 
     # SNMP request to retrieve routing table (OID: 1.3.6.1.2.1.4.21.1)
-    var_binds = nextCmd(snmp_engine, CommunityData(community), UdpTransportTarget((router_ip, 161)),
-                        ContextData(), ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')), lexicographicMode=False)
+    var_binds = nextCmd(SnmpEngine(), 
+                        CommunityData(community), 
+                        UdpTransportTarget((router_ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysName', 0)))
+                        #ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')),
+                        #lexicographicMode=False)
 
-    print(f"-----------------------var_binds---------------------------")
-    print(f"{var_binds}")
     # Process SNMP response
     for error_indication, error_status, var_bind_table in var_binds:
         print(f"error_indication: {error_indication}")
