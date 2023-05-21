@@ -74,12 +74,15 @@ def find_topology():
 
     print(f"-----------------------var_binds---------------------------")
     print(f"{var_binds}")
+    next(var_binds)
     # Process SNMP response
-    for error_indication, error_status, error_index, var_bind_table in var_binds:
+    for error_indication, error_status, var_bind_table in var_binds:
+        print(f"error_indication: {error_indication}")
         if error_indication:
             print(f"Error indicator: {error_indication}")
             return routing_table
 
+        print(f"error_status: {error_status}")
         if error_status:
             print(f"Error status: {error_status.prettyPrint()}")
             return routing_table
