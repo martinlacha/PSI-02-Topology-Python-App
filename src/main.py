@@ -74,7 +74,6 @@ def find_topology():
 
     print(f"-----------------------var_binds---------------------------")
     print(f"{var_binds}")
-    next(var_binds)
     # Process SNMP response
     for error_indication, error_status, var_bind_table in var_binds:
         print(f"error_indication: {error_indication}")
