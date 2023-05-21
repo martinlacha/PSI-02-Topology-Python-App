@@ -55,7 +55,7 @@ def find_topology():
                         ContextData(),
                         #ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysName', 0)))
                         ObjectType(ObjectIdentity('1.3.6.1.2.1.4.21.1')),
-                        lexicographicMode=True)
+                        lexicographicMode=False)
 
     # Process SNMP response
     for error_indication, error_status, error_index, var_bind_table in var_binds:
