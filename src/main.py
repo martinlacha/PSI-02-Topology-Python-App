@@ -70,13 +70,12 @@ def find_topology():
         # Extract routing table information
         for var_bind in var_bind_table:
             oid = var_bind[0]
-            value = var_bind[1]
 
             # Process each entry in the routing table
             if str(oid).startswith('1.3.6.1.2.1.4.21.1.7'):  # OID for routing table entry
                 print(f"oid: {str(oid)}")
                 index = str(oid).split('.')[-1]
-                route_entry = f"Index: {index}, Next Hop: {value}, Value: {var_bind[-1].prettyPrint()}"
+                route_entry = f"Index: {index}, Value: {var_bind[-1].prettyPrint()}"
                 print(route_entry)
                 routing_table.append(route_entry)
 
