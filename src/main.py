@@ -76,7 +76,7 @@ def find_topology():
             if str(oid).startswith('1.3.6.1.2.1.4.21.1.7'):  # OID for routing table entry
                 print(f"oid: {str(oid)}")
                 index = str(oid).split('.')[-1]
-                route_entry = f"Index: {index}, Next Hop: {value}"
+                route_entry = f"Index: {index}, Next Hop: {value}, Value: {var_bind[-1].prettyPrint()}"
                 print(route_entry)
                 routing_table.append(route_entry)
 
