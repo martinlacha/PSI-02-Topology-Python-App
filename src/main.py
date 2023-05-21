@@ -3,7 +3,6 @@ from scapy.layers.dhcp import BOOTP, DHCP, dhcp_request
 from scapy.layers.inet import IP, UDP
 from scapy.layers.l2 import Ether
 from pysnmp.hlapi import *
-from snmpy import snmp_get, snmp_walk
 
 router_ip = None
 args = sys.argv
