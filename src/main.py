@@ -18,6 +18,7 @@ def check_cli_args():
         print(f"Usage: python3 main.py <community>")
         exit(1)
     community = args[community_cli_index]
+    conf.checkIPaddr = False
 
 def get_router_ip():
     global router_ip
