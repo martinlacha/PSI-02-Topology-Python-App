@@ -1,2 +1,3 @@
-scapy
-pysnmp
+scapy==2.4.5
+pysnmp==4.4.12
+pyasn1==0.4.8

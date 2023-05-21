@@ -37,30 +37,16 @@ def get_router_ip():
     # Process the DHCP response packets
     dhcp_options = response['DHCP'].options
     for option in dhcp_options:
-        print(f"Option: {option}")
         if isinstance(option, tuple) and option[0] == 'router':
             router_ip = option[1]
             print(f"Router IP from DHCP discover packet: {router_ip}")
             return
-    print(f"Can't found Ip address from DHCP dicover packet")
-                        
-
-def get_ip():
-    router_ip = None
-    # Create a DHCP discover packet
-    dhcp_discover = Ether(dst="ff:ff:ff:ff:ff:ff") / IP(src="0.0.0.0", dst="255.255.255.255") / UDP(sport=68, dport=67) / \
-                    BOOTP(chaddr=RandMAC()) / DHCP(options=[("message-type", "discover"), "end"])
-    # Send the DHCP discover packet and receive the response
-    response = srp1(dhcp_discover, timeout=5, verbose=False)
-    if DHCP in response and response[DHCP].options[0][1] == 2:  # DHCP Offer packet
-        router_ip = response[IP].src
-    return router_ip
+    print(f"Can't found IP address from DHCP dicover packet")
 
 
 def find_topology():
     print("----------------- Topology -----------------")
     routing_table = []
-    # SNMP parameters
 
     # SNMP request to retrieve routing table (OID: 1.3.6.1.2.1.4.21.1)
     var_binds = nextCmd(SnmpEngine(), 
@@ -72,7 +58,7 @@ def find_topology():
                         #lexicographicMode=False)
 
     # Process SNMP response
-    for error_indication, error_status, var_bind_table in var_binds:
+    for error_indication, error_status, error_index, var_bind_table in var_binds:
         print(f"error_indication: {error_indication}")
         if error_indication:
             print(f"Error indicator: {error_indication}")
