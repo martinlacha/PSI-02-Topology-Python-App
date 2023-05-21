@@ -18,7 +18,7 @@ def check_cli_args():
         print(f"Usage: python3 main.py <community>")
         exit(1)
     community = args[community_cli_index]
-    conf.checkIPaddr = False
+    conf.checkIPaddr = True
 
 def get_router_ip():
     global router_ip
@@ -33,7 +33,7 @@ def get_router_ip():
     print(f"Router IP: {router_ip}")
     print("----------------------------------------")
     dhcp_response = dhcp_request()
-    print(f"dhcp_response: {dhcp_response}")
+
     
     '''
     # Define a DHCP request packet
