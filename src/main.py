@@ -31,7 +31,7 @@ def get_router_ip():
     print(gw)
     print(f"Router IP: {router_ip}")
     print("----------------------------------------")
-    dhcp_response = dhcp_request(requested_addr='10.0.1.254')
+    dhcp_response = dhcp_request()
     print(f"dhcp_response: {dhcp_response}")
     
     '''
