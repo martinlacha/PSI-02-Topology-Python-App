@@ -26,23 +26,13 @@ def get_router_ip():
     # [0] - interface
     # [1] - device IP
     # [2] - router IP
-    print("----------------------------------------")
     gw = conf.route.route('0.0.0.0')
     router_ip = gw[2]
     print(gw)
     print(f"Router IP: {router_ip}")
-    print("----------------------------------------")
-    dhcp_response = dhcp_request()
-    print(f"dhcp_response: {dhcp_response}")
+    print(f"Send DHCP discover")
+    response = dhcp_request()
     
-    '''
-    # Define a DHCP request packet
-    dhcp_discover = Ether(dst="ff:ff:ff:ff:ff:ff") / IP(src="0.0.0.0", dst="255.255.255.255") / UDP(sport=68, dport=67) / \
-                    BOOTP(chaddr=RandMAC()) / DHCP(options=[("message-type", "discover"), "end"])
-
-    # Send the DHCP request packet and receive the response
-    response = srp(dhcp_discover, timeout=5, verbose=False)
-
     # Process the DHCP response packets
     for index, msg in enumerate(response):
         for packet in response[index]:
@@ -51,7 +41,6 @@ def get_router_ip():
                     if isinstance(option, tuple) and option[0] == 'router':
                         router_ip = option[1]
                         break
-    '''
                         
 
 def get_ip():
