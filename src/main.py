@@ -97,6 +97,47 @@ def get_routing_table(router_ip):
     return routing_table
 
 
+# Get system ID by IP address
+def get_system_id(ip):
+    error_indication, error_status, error_index, var_binds = next(
+        getCmd(SnmpEngine(),
+               CommunityData(community),
+               UdpTransportTarget((ip, 161)),
+               ContextData(),
+               ObjectType(ObjectIdentity('1.3.6.1.2.1.1.2.0')))
+    )
+    if error_indication:
+        print(f"Chyba: {error_indication}")
+    elif error_status:
+        print(f"Chyba: {error_status.prettyPrint()} na indexu {error_index and var_binds[int(error_index) - 1][0] or '?'}")
+    else:
+        for var_bind in var_binds:
+            print(f"Systémový identifikátor: {var_bind.prettyPrint()}")
+
+
+# Get interfaces IPs
+def get_interface_ips(ip):
+    error_indication, error_status, error_index, var_binds = next(
+        getCmd(SnmpEngine(),
+               CommunityData(community),
+               UdpTransportTarget((ip, 161)),
+               ContextData(),
+               ObjectType(ObjectIdentity('IP-MIB', 'ipAdEntAddr')))
+    )
+
+    if error_indication:
+        print(f"Error: {error_indication}")
+    elif error_status:
+        print(f"Error: {error_status.prettyPrint()} at index {error_index and var_binds[int(error_index) - 1][0] or '?'}")
+    else:
+        for var_bind in var_binds:
+            print(f"var_bind ifs: {var_bind}")
+            for var in var_bind:
+                ip_address = var.prettyPrint()
+                print(f"Interface IP: {ip_address}")
+
+
+# Get hostname of router by IP address
 def snmp_get_hostname(ip):
     error_indication, error_status, error_index, var_binds = next(
             getCmd(SnmpEngine(),
@@ -130,6 +171,9 @@ def find_topology():
         if hostname is None:
             print(f"IP {ip} is not valid. Skiping.")
             continue
+
+        get_system_id(ip)
+        get_interface_ips(ip)
         
         #snmp_get(ip_to_process)
         route_table = get_routing_table(ip)
