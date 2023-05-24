@@ -64,7 +64,7 @@ def get_router_ip():
 
 
 def get_routing_table(router_ip):
-    routing_table = []
+    routing_table = set()
 
     # SNMP request to retrieve routing table (OID: 1.3.6.1.2.1.4.21.1)
     var_binds = nextCmd(SnmpEngine(), 
@@ -93,7 +93,6 @@ def get_routing_table(router_ip):
             # Process each entry in the routing table
             if str(oid).startswith('1.3.6.1.2.1.4.21.1.7'):  # OID for routing table entry
                 route_entry = f"{var_bind[-1].prettyPrint()}"
-                print(f" - {route_entry}")
                 routing_table.append(route_entry)
     return routing_table
 
@@ -131,12 +130,12 @@ def find_topology():
     print("----------------- Finding topology -----------------")
     while neighbors_to_process:
         ip = neighbors_to_process.pop()
-        print(f"--------- Processing: {ip} ---------")
+        print(f"Processing: {ip}")
         #snmp_get(ip_to_process)
         route_table = get_routing_table(ip)
         # TODO zde projít list routovací tabulky a zkusit získat nějaké info o něm a podle toho přidat do tabulky
-        for table_entry in route_table:
-
+        for route in route_table:
+            print(f" - {route}")
             pass
         
         neighbors_processed.add(ip)
