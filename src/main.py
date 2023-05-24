@@ -87,14 +87,14 @@ def get_routing_table(router_ip):
 
         # Extract routing table information
         for var_bind in var_bind_table:
+            print(f"var_bind: {var_bind}")
             oid = var_bind[0]
 
+            print("Routing table:")
             # Process each entry in the routing table
             if str(oid).startswith('1.3.6.1.2.1.4.21.1.7'):  # OID for routing table entry
-                print(f"oid: {str(oid)}")
-                index = str(oid).split('.')[-1]
-                route_entry = f"Index: {index}, Value: {var_bind[-1].prettyPrint()}"
-                print(route_entry)
+                route_entry = f"{var_bind[-1].prettyPrint()}"
+                print(f" - {route_entry}")
                 routing_table.append(route_entry)
     return routing_table
 
@@ -135,10 +135,13 @@ def find_topology():
         print(f"--------- Processing: {ip} ---------")
         #snmp_get(ip_to_process)
         route_table = get_routing_table(ip)
-        neighbors_processed.add(ip)
-
         # TODO zde projít list routovací tabulky a zkusit získat nějaké info o něm a podle toho přidat do tabulky
+        for table_entry in route_table:
+
+            pass
         
+        neighbors_processed.add(ip)
+        print(f"{ip} processed.")
     print("--------------------------------------------")
     pass
 
