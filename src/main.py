@@ -175,7 +175,7 @@ def find_topology():
             route_hostname = snmp_get_hostname(route)
             if route_hostname is None:
                 continue
-            print(f" - {route}: {route_hostname}")
+            print(f" - {route_hostname}: {route}")
             if hostname == route_hostname:
                 continue
             neighbors_to_process.add(route)
