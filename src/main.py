@@ -179,6 +179,7 @@ def find_topology():
             print(f" - {route}: {route_hostname}")
             if hostname == route_hostname:
                 print(f"Skip same router interface {route}")
+                continue
             add_to_neighbbors_matrix(hostname, route_hostname)
             
         
