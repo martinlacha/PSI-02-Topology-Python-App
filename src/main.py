@@ -76,6 +76,7 @@ def get_routing_table(router_ip):
                         lexicographicMode=False)
 
     # Process SNMP response
+    print("Routing table:")
     for error_indication, error_status, error_index, var_bind_table in var_binds:
         if error_indication:
             print(f"Error indicator: {error_indication}")
@@ -85,7 +86,6 @@ def get_routing_table(router_ip):
             print(f"Error status: {error_status.prettyPrint()}")
             return None
 
-        print("Routing table:")
         # Extract routing table information
         for var_bind in var_bind_table:
             oid = var_bind[0]
