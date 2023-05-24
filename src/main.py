@@ -93,7 +93,7 @@ def get_routing_table(router_ip):
             # Process each entry in the routing table
             if str(oid).startswith('1.3.6.1.2.1.4.21.1.7'):  # OID for routing table entry
                 route_entry = f"{var_bind[-1].prettyPrint()}"
-                routing_table.append(route_entry)
+                routing_table.add(route_entry)
     return routing_table
 
 
