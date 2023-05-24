@@ -122,6 +122,7 @@ def get_interface_ips(ip):
         print(f"Error: {error_status.prettyPrint()} at index {error_index and var_binds[int(error_index) - 1][0] or '?'}")
         return
 
+    print(f"var_binds: {var_binds}")
     for var_bind in var_binds:
         print(f"var_bind: {var_bind}")
         for var in var_bind:
