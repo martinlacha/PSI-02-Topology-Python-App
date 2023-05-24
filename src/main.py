@@ -97,33 +97,26 @@ def get_routing_table(router_ip):
     return routing_table
 
 
-'''
-def snmp_get(ip):
-    # Definujte OID (Object Identifier) pro hodnotu, kterou chcete získat
-    oid = ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)
+def snmp_get_hostname(ip):
+    error_indication, error_status, error_index, var_binds = next(
+            getCmd(SnmpEngine(),
+                CommunityData(community),
+                UdpTransportTarget((ip, 161)),
+                ContextData(),
+                ObjectType(ObjectIdentity('1.3.6.1.2.1.1.5.0')))
+        )
 
-    # Vytvořte SNMP GET operaci
-    snmp_get = getCmd(
-        SnmpEngine(),
-        CommunityData(community),
-        UdpTransportTarget((ip, 161)),
-        ContextData(),
-        ObjectType(oid)
-    )
-
-    # Vykonání SNMP GET operace a získání odpovědi
-    error_indication, error_status, error_index, var_binds = next(snmp_get)
-
-    # Zkontrolujte, zda operace byla úspěšná
     if error_indication:
-        print(f'Chyba při provedení SNMP operace: {error_indication}')
+        print(f"Chyba: {error_indication}")
+        return None
     elif error_status:
-        print(f'SNMP operace vrátila chybu: {error_status.prettyPrint()}')
+        print(f"Chyba: {error_status.prettyPrint()} na indexu {error_index and var_binds[int(error_index) - 1][0] or '?'}")
+        return None
     else:
-        # Získání hodnoty ze získaného vázání proměnných (var_binds)
         for var_bind in var_binds:
-            print(f'{var_bind.prettyPrint()}')
-'''
+            for var in var_bind:
+                print(f"hostname: {var.prettyPrint()}")
+                return var.prettyPrint()
 
 
 def find_topology():
@@ -131,8 +124,17 @@ def find_topology():
     while neighbors_to_process:
         ip = neighbors_to_process.pop()
         print(f"Processing: {ip}")
+
+        # Check if ip is router interface
+        hostname = snmp_get_hostname(ip)
+        if hostname is None:
+            print(f"IP {ip} is not valid. Skiping.")
+            continue
+        
         #snmp_get(ip_to_process)
         route_table = get_routing_table(ip)
+        if ip in route_table:
+            route_table.remove(ip)
         # TODO zde projít list routovací tabulky a zkusit získat nějaké info o něm a podle toho přidat do tabulky
         for route in route_table:
             print(f" - {route}")
