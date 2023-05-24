@@ -132,11 +132,11 @@ def find_topology():
     for ip_to_process in neighbors_to_process:
         print(f"--------- Processing: {ip_to_process} ---------")
         #snmp_get(ip_to_process)
-        route_table = get_routing_table()
+        route_table = get_routing_table(ip_to_process)
         neighbors_processed.remove(ip_to_process)
 
         # TODO zde projít list routovací tabulky a zkusit získat nějaké info o něm a podle toho přidat do tabulky
-        
+
         
     print("--------------------------------------------")
     pass
