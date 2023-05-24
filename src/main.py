@@ -112,7 +112,7 @@ def get_interface_ips(ip):
                CommunityData(community),
                UdpTransportTarget((ip, 161)),
                ContextData(),
-               ObjectType(ObjectIdentity('1.3.6.1.2.1')))
+               ObjectType(ObjectIdentity('1.3.6.1.2')))
     )
 
     if error_indication:
