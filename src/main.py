@@ -205,8 +205,8 @@ def add_to_neighbors_matrix(router_host_name, neighbor_hostname) -> None:
 def print_neighbors_matrix() -> None:
     global neighbors_dict
     print(f"----------------------- Topology -----------------------")
-    for row 
-    print(neighbors_dict)
+    for router, neighbors in neighbors_dict.items():
+        print(f"{router}: {neighbors}")
 
 
 if __name__ == "__main__":
