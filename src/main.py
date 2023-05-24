@@ -36,7 +36,7 @@ def get_router_ip():
     print(f"Router IP from config: {router_ip}")
     print(f"Send DHCP discover")
     response = dhcp_request()
-    response.display()
+    #response.display()
     
     # Process the DHCP response packets
     dhcp_options = response['DHCP'].options
@@ -85,6 +85,7 @@ def get_routing_table(router_ip):
     return routing_table
 
 
+'''
 # Get system ID by IP address
 def get_system_id(ip):
     error_indication, error_status, error_index, var_binds = next(
@@ -101,6 +102,7 @@ def get_system_id(ip):
     else:
         for var_bind in var_binds:
             print(f"System ID: {var_bind.prettyPrint()}")
+'''
 
 
 # Get interfaces IPs
@@ -110,7 +112,7 @@ def get_interface_ips(ip):
                CommunityData(community),
                UdpTransportTarget((ip, 161)),
                ContextData(),
-               ObjectType(ObjectIdentity('IP-MIB', 'ipAdEntAddr')))
+               ObjectType(ObjectIdentity('1.3.6.1.2.1.4.20.1')))
     )
 
     if error_indication:
@@ -160,7 +162,7 @@ def find_topology():
             print(f"IP {ip} is not valid. Skiping.")
             continue
 
-        get_system_id(ip)
+        #get_system_id(ip)
         get_interface_ips(ip)
         
         #snmp_get(ip_to_process)
