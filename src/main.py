@@ -149,7 +149,6 @@ def snmp_get_hostname(ip):
     else:
         for var_bind in var_binds:
             hostname = f"{var_bind[-1].prettyPrint()}"
-            print(f"hostname: {hostname}")
             return hostname
     return None
 
@@ -187,19 +186,12 @@ def find_topology():
 
 def add_to_neighbors_matrix(router_host_name, neighbor_hostname) -> None:
     global neighbors_dict
-    print(f"For router {router_host_name} add {neighbor_hostname}")
     if router_host_name in neighbors_dict:
         neighbors = neighbors_dict[router_host_name]
-        print(f"Before: {neighbors}")
         neighbors.append(neighbor_hostname)
-        print(f"After: {neighbors}")
         neighbors_dict[router_host_name].append(neighbor_hostname)
     else:
-        print(f"Adding {router_host_name}: {neighbor_hostname} {neighbor_hostname}")
-        print(type(router_host_name))
-        print(type(neighbor_hostname))
         neighbors_dict[str(router_host_name)] = str(neighbor_hostname)
-        print(f"After: {neighbors_dict[router_host_name]}")
 
 
 def print_neighbors_matrix() -> None:
