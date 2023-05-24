@@ -123,8 +123,9 @@ def get_interface_ips(ip):
         return
 
     for var_bind in var_binds:
+        print(f"var_bind: {var_bind}")
         for var in var_bind:
-            interface_ip = var[1].prettyPrint()
+            interface_ip = var[1]
             print(f"IP Address: {interface_ip}")
 
 
