@@ -167,7 +167,7 @@ def find_topology():
             continue
         
         all_routers.append(hostname)
-        router_interface_ips = get_interface_ips(ip)
+        #router_interface_ips = get_interface_ips(ip)
         route_table = get_routing_table(ip)
         if ip in route_table:
             route_table.remove(ip)
@@ -178,13 +178,10 @@ def find_topology():
                 continue
             print(f" - {route}: {route_hostname}")
             if hostname == route_hostname:
-                print(f"Skip same router interface {route}")
                 continue
             neighbors_to_process.add(route)
             add_to_neighbors_matrix(hostname, route_hostname)
         neighbors_processed.add(ip)
-        print(f"Processed.")
-    print("--------------------------------------------")
     pass
 
 
@@ -208,6 +205,7 @@ def add_to_neighbors_matrix(router_host_name, neighbor_hostname) -> None:
 def print_neighbors_matrix() -> None:
     global neighbors_dict
     print(f"----------------------- Topology -----------------------")
+    for row 
     print(neighbors_dict)
 
 
