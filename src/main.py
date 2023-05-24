@@ -15,18 +15,6 @@ topology_tree = {}
 neighbors_to_process = set()
 neighbors_processed = set()
 
-class TopologyEntry:
-    def __init__(self, ip, level, children) -> None:
-        self._ip = ip
-        self._level = level
-        self._children = children
-
-    def print_children() -> None:
-        print(f"{self._ip} children:")
-        for index, child in enumerate(self._children):
-            print(f"{index}: {child}")
-
-
 def check_cli_args():
     global community
     if len(args) != expected_arguments:
@@ -62,7 +50,7 @@ def get_router_ip():
     print(f"Use IP address from configuration.")
     neighbors_processed.add(router_ip)
 
-
+# Get routing table from router on IP address 
 def get_routing_table(router_ip):
     routing_table = set()
 
@@ -112,7 +100,7 @@ def get_system_id(ip):
         print(f"Chyba: {error_status.prettyPrint()} na indexu {error_index and var_binds[int(error_index) - 1][0] or '?'}")
     else:
         for var_bind in var_binds:
-            print(f"Systémový identifikátor: {var_bind.prettyPrint()}")
+            print(f"System ID: {var_bind.prettyPrint()}")
 
 
 # Get interfaces IPs
@@ -179,10 +167,12 @@ def find_topology():
         route_table = get_routing_table(ip)
         if ip in route_table:
             route_table.remove(ip)
-        # TODO zde projít list routovací tabulky a zkusit získat nějaké info o něm a podle toho přidat do tabulky
+
+        
         for route in route_table:
             print(f" - {route}")
-            pass
+            
+        #TODO vyfitrovat moje a rekurzivně zavolat znovu
         
         neighbors_processed.add(ip)
         print(f"Processed.")
