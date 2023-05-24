@@ -197,7 +197,7 @@ def add_to_neighbbors_matrix(router_host_name, neighbor_hostname) -> None:
         print(f"After: {neighbors}")
         neighbors_dict[router_host_name].append(neighbor_hostname)
     else:
-        neighbors_dict[router_host_name] = neighbor_hostname
+        neighbors_dict[str(router_host_name)] = str(neighbor_hostname)
 
 
 def print_neighbors_matrix() -> None:
