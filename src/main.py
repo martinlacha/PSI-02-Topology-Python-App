@@ -131,7 +131,7 @@ def snmp_get(ip):
 def find_topology():
     print("----------------- Finding topology -----------------")
     while neighbors_to_process:
-        ip = neighbors_processed.pop()
+        ip = neighbors_to_process.pop()
         print(f"--------- Processing: {ip} ---------")
         #snmp_get(ip_to_process)
         route_table = get_routing_table(ip)
