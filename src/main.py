@@ -114,6 +114,7 @@ def snmp_get_hostname(ip):
         return None
     else:
         for var_bind in var_binds:
+            print(f"{var_bind[-1].prettyPrint()}")
             for var in var_bind:
                 print(f"hostname: {var.prettyPrint()}")
                 return var.prettyPrint()
@@ -141,7 +142,7 @@ def find_topology():
             pass
         
         neighbors_processed.add(ip)
-        print(f"{ip} processed.")
+        print(f"Processed.")
     print("--------------------------------------------")
     pass
 
