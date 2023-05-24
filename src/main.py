@@ -10,8 +10,9 @@ community = "public"
 
 expected_arguments = 2
 community_cli_index = 1
-
-topology_tree = {}
+all_routers = []
+neighbors_matrix = [[],
+                    []]
 neighbors_to_process = set()
 neighbors_processed = set()
 
@@ -109,7 +110,7 @@ def get_system_id(ip):
 def get_interface_ips(ip):
     error_indication, error_status, error_index, var_binds = next(
         getCmd(SnmpEngine(),
-               CommunityData(community),
+               CommunityData(community, mpModel=0),
                UdpTransportTarget((ip, 161)),
                ContextData(),
                ObjectType(ObjectIdentity('1.3.6.1.2.1.4.20.1.1')))
@@ -161,14 +162,14 @@ def find_topology():
 
         # Check if ip is router interface
         hostname = snmp_get_hostname(ip)
-        if hostname is None:
+        if hostname is None or hostname in all_routers:
             print(f"IP {ip} is not valid. Skiping.")
             continue
-
-        #get_system_id(ip)
-        get_interface_ips(ip)
         
-        #snmp_get(ip_to_process)
+        all_routers.append(hostname)
+
+        router_interface_ips = get_interface_ips(ip)
+        
         route_table = get_routing_table(ip)
         if ip in route_table:
             route_table.remove(ip)
