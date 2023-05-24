@@ -181,14 +181,14 @@ def find_topology():
                 print(f"Skip same router interface {route}")
                 continue
             neighbors_to_process.add(route)
-            add_to_neighbbors_matrix(hostname, route_hostname)
+            add_to_neighbors_matrix(hostname, route_hostname)
         neighbors_processed.add(ip)
         print(f"Processed.")
     print("--------------------------------------------")
     pass
 
 
-def add_to_neighbbors_matrix(router_host_name, neighbor_hostname) -> None:
+def add_to_neighbors_matrix(router_host_name, neighbor_hostname) -> None:
     global neighbors_dict
     print(f"For router {router_host_name} add {neighbor_hostname}")
     if router_host_name in neighbors_dict:
@@ -199,9 +199,9 @@ def add_to_neighbbors_matrix(router_host_name, neighbor_hostname) -> None:
         neighbors_dict[router_host_name].append(neighbor_hostname)
     else:
         print(f"Adding {router_host_name}: {neighbor_hostname}")
-        print(f"Before: {neighbors[router_host_name]}")
+        print(f"Before: {neighbors_dict[router_host_name]}")
         neighbors_dict[str(router_host_name)] = str(neighbor_hostname)
-        print(f"After: {neighbors[router_host_name]}")
+        print(f"After: {neighbors_dict[router_host_name]}")
 
 
 def print_neighbors_matrix() -> None:
