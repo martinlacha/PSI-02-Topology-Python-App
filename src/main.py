@@ -85,12 +85,12 @@ def get_routing_table(router_ip):
             print(f"Error status: {error_status.prettyPrint()}")
             return None
 
+        print("Routing table:")
         # Extract routing table information
         for var_bind in var_bind_table:
             print(f"var_bind: {var_bind}")
             oid = var_bind[0]
 
-            print("Routing table:")
             # Process each entry in the routing table
             if str(oid).startswith('1.3.6.1.2.1.4.21.1.7'):  # OID for routing table entry
                 route_entry = f"{var_bind[-1].prettyPrint()}"
