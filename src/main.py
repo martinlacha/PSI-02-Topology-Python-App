@@ -3,8 +3,6 @@ from scapy.layers.dhcp import BOOTP, DHCP, dhcp_request
 from scapy.layers.inet import IP, UDP
 from scapy.layers.l2 import Ether
 from pysnmp.hlapi import *
-import .
-
 
 router_ip = None
 args = sys.argv
@@ -60,7 +58,9 @@ def get_router_ip():
             print(f"Router IP from DHCP discover packet: {router_ip}")
             neighbors_to_process.add(router_ip)
             return
-    print(f"Can't found IP address from DHCP dicover packet")
+    print(f"Can't found IP address from DHCP dicover packet.")
+    print(f"Use IP address from configuration.")
+    neighbors_processed.add(router_ip)
 
 
 def get_routing_table(router_ip):
@@ -79,11 +79,11 @@ def get_routing_table(router_ip):
     for error_indication, error_status, error_index, var_bind_table in var_binds:
         if error_indication:
             print(f"Error indicator: {error_indication}")
-            return routing_table
+            return None
 
         if error_status:
             print(f"Error status: {error_status.prettyPrint()}")
-            return routing_table
+            return None
 
         # Extract routing table information
         for var_bind in var_bind_table:
@@ -98,7 +98,7 @@ def get_routing_table(router_ip):
                 routing_table.append(route_entry)
     return routing_table
 
-
+'''
 def snmp_get(ip):
     # Definujte OID (Object Identifier) pro hodnotu, kterou chcete získat
     oid = ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)
@@ -124,14 +124,20 @@ def snmp_get(ip):
         # Získání hodnoty ze získaného vázání proměnných (var_binds)
         for var_bind in var_binds:
             print(f'{var_bind.prettyPrint()}')
+'''
 
 
 def find_topology():
     print("----------------- Finding topology -----------------")
     for ip_to_process in neighbors_to_process:
         print(f"--------- Processing: {ip_to_process} ---------")
-        snmp_get(ip_to_process)
+        #snmp_get(ip_to_process)
+        route_table = get_routing_table()
         neighbors_processed.remove(ip_to_process)
+
+        # TODO zde projít list routovací tabulky a zkusit získat nějaké info o něm a podle toho přidat do tabulky
+        
+        
     print("--------------------------------------------")
     pass
 
