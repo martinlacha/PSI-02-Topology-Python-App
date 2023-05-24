@@ -134,7 +134,6 @@ def find_topology():
         print(f"--------- Processing: {ip_to_process} ---------")
         #snmp_get(ip_to_process)
         route_table = get_routing_table(ip_to_process)
-        print(f"{nei}")
         neighbors_to_process.remove(ip_to_process)
         neighbors_processed.add(ip_to_process)
 
