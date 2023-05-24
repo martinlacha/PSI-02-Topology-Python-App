@@ -113,7 +113,7 @@ def get_interface_ips(ip):
                CommunityData(community, mpModel=0),
                UdpTransportTarget((ip, 161)),
                ContextData(),
-               ObjectType(ObjectIdentity('1.3.6.1.2.1.4.20.1.1')))
+               ObjectType(ObjectIdentity('1.3.6.1.2.1.4.20.1.1')), )
     )
 
     if error_indication:
@@ -142,10 +142,10 @@ def snmp_get_hostname(ip):
         )
 
     if error_indication:
-        print(f"Chyba: {error_indication}")
+        print(f"Error: {error_indication}")
         return None
     elif error_status:
-        print(f"Chyba: {error_status.prettyPrint()} na indexu {error_index and var_binds[int(error_index) - 1][0] or '?'}")
+        print(f"Error: {error_status.prettyPrint()} at index {error_index and var_binds[int(error_index) - 1][0] or '?'}")
         return None
     else:
         for var_bind in var_binds:
