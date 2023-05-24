@@ -88,7 +88,6 @@ def get_routing_table(router_ip):
         print("Routing table:")
         # Extract routing table information
         for var_bind in var_bind_table:
-            print(f"var_bind: {var_bind}")
             oid = var_bind[0]
 
             # Process each entry in the routing table
