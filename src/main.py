@@ -189,6 +189,7 @@ def find_topology():
 
 
 def add_to_neighbbors_matrix(router_host_name, neighbor_hostname) -> None:
+    print(f"For router {router_host_name} add {neighbor_hostname}")
     neighbors_dict[router_host_name].append(neighbor_hostname)
 
 
