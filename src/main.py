@@ -11,8 +11,7 @@ community = "public"
 expected_arguments = 2
 community_cli_index = 1
 all_routers = []
-neighbors_matrix = [[],
-                    []]
+neighbors_dict = {}
 neighbors_to_process = set()
 neighbors_processed = set()
 
@@ -159,26 +158,29 @@ def find_topology():
     while neighbors_to_process:
         ip = neighbors_to_process.pop()
         print(f"Processing: {ip}")
-
-        # Check if ip is router interface
         hostname = snmp_get_hostname(ip)
-        if hostname is None or hostname in all_routers:
+        if hostname is None:
             print(f"IP {ip} is not valid. Skiping.")
+            continue
+        if hostname in all_routers:
+            print(f"Router {hostname} was already processed. Skiping")
             continue
         
         all_routers.append(hostname)
-
         router_interface_ips = get_interface_ips(ip)
-        
         route_table = get_routing_table(ip)
         if ip in route_table:
             route_table.remove(ip)
-
         
         for route in route_table:
-            print(f" - {route}")
+            route_hostname = snmp_get_hostname(route)
+            if route_hostname is None:
+                continue
+            print(f" - {route}: {route_hostname}")
+            if hostname == route_hostname:
+                print(f"Skip same router interface {route}")
+            add_to_neighbbors_matrix(hostname, route_hostname)
             
-        #TODO vyfitrovat moje a rekurzivně zavolat znovu
         
         neighbors_processed.add(ip)
         print(f"Processed.")
@@ -186,7 +188,21 @@ def find_topology():
     pass
 
 
+def add_to_neighbbors_matrix(router_host_name, neighbor_hostname) -> None:
+    if router_host_name in neighbor_hostname:
+        neighbors_dict[router_host_name].append(neighbor_hostname)
+    else:
+        neighbors_dict[router_host_name] = [neighbor_hostname]
+
+
+def print_neighbors_matrix() -> None:
+    print(f"----------------------- Topology -----------------------")
+    for key, value in neighbors_dict:
+        print(f"Router {key}: {value}")
+
+
 if __name__ == "__main__":
     check_cli_args()
     get_router_ip()
     find_topology()
+    print_neighbors_matrix()
