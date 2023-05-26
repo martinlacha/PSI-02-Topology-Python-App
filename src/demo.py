@@ -1,6 +1,6 @@
 from pysnmp.hlapi import *
  
-def walk(host, oid):
+def get(host, oid):
     for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
         CommunityData('PSIPUB'), UdpTransportTarget((host, 161)), ContextData(),
         ObjectType(ObjectIdentity(oid)), lexicographicMode=False):
@@ -17,4 +17,4 @@ def walk(host, oid):
                 print(varBind)
  
 #walk('10.0.2.254', '1.3.6.1.2.1.4.24.4.1.1')
-walk('192.168.1.2', '1.3.6.1.2.1.4.20.1.1')
+walk('10.0.1.254', '1.3.6.1.2.1.4.20.1.1')
