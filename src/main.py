@@ -87,6 +87,7 @@ def get_routing_table(router_ip):
 
 # Get interfaces IPs
 def get_interface_ips(ip):
+    router_interfaces = set()
     for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
         CommunityData(community), UdpTransportTarget((ip, 161)), ContextData(),
         ObjectType(ObjectIdentity('1.3.6.1.2.1.4.20.1.1')), lexicographicMode=False):
@@ -101,7 +102,9 @@ def get_interface_ips(ip):
             break
         else:
             for varBind in varBinds:
-                print(f"interface: {varBind}")
+                print(f"interface: {varBind[1]}")
+                router_interfaces.add(varBind[1])
+    return router_interfaces
 
 
 # Get hostname of router by IP address
