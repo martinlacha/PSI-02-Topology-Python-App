@@ -109,7 +109,7 @@ def get_system_id(ip):
 def get_interface_ips(ip):
     error_indication, error_status, error_index, var_binds = next(
         getCmd(SnmpEngine(),
-               CommunityData(community, mpModel=0),
+               CommunityData(community),
                UdpTransportTarget((ip, 161)),
                ContextData(),
                ObjectType(ObjectIdentity('1.3.6.1.2.1.4.20.1.1')), )
