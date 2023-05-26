@@ -166,7 +166,9 @@ def find_topology():
             continue
         
         all_routers.append(hostname)
-        #router_interface_ips = get_interface_ips(ip)
+
+        # TODO nefunguje
+        router_interface_ips = get_interface_ips(ip)
         route_table = get_routing_table(ip)
         if ip in route_table:
             route_table.remove(ip)
