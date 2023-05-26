@@ -100,7 +100,7 @@ def get_interface_ips(ip):
                                 file=sys.stderr)
             break
         else:
-            for varBind in enumerate(varBinds):
+            for varBind in varBinds:
                 print(f"{index}: {varBind[1].prettyPrint()}")
                 router_interfaces.add(varBind[1].prettyPrint())
                 index = index + 1
