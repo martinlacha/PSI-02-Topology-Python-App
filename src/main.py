@@ -140,7 +140,7 @@ def find_topology():
         if hostname in all_routers:
             #print(f"Router {hostname} was already processed. Skiping")
             continue
-
+        print("-------------------------------------------")
         print(f"Processing router {hostname}: {ip}")
         
         all_routers.append(hostname)
@@ -161,7 +161,7 @@ def find_topology():
             neighbors_to_process.add(route)
             add_to_neighbors_matrix(hostname, route_hostname)
         neighbors_processed.add(ip)
-    pass
+        print("-------------------------------------------")
 
 
 def add_to_neighbors_matrix(router_host_name, neighbor_hostname) -> None:
