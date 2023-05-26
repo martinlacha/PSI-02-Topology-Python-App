@@ -137,12 +137,11 @@ def find_topology():
         if hostname is None:
             print(f"IP {ip} is not valid. Skiping.")
             continue
-
-        print(f"Processing router {hostname}: {ip}")
-        
         if hostname in all_routers:
             #print(f"Router {hostname} was already processed. Skiping")
             continue
+
+        print(f"Processing router {hostname}: {ip}")
         
         all_routers.append(hostname)
 
