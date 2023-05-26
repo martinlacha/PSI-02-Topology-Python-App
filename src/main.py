@@ -15,6 +15,7 @@ neighbors_dict = {}
 neighbors_to_process = set()
 neighbors_processed = set()
 
+# Check command line arguments
 def check_cli_args():
     global community
     if len(args) != expected_arguments:
@@ -24,20 +25,16 @@ def check_cli_args():
     community = args[community_cli_index]
     conf.checkIPaddr = False
 
+# Get router IP from configuration or from DHCP discover request
 def get_router_ip():
     global router_ip
-    # vrátí pole
-    # [0] - interface
-    # [1] - device IP
-    # [2] - router IP
+    # [0] - interface, [1] - device IP, [2] - router IP
     gw = conf.route.route('0.0.0.0')
     router_ip = gw[2]
-    print(gw)
-    print(f"Router IP from config: {router_ip}")
-    print(f"Send DHCP discover")
+    #print(gw)
+    #print(f"Router IP from config: {router_ip}")
+    #print(f"Send DHCP discover")
     response = dhcp_request()
-    #response.display()
-    
     # Process the DHCP response packets
     dhcp_options = response['DHCP'].options
     for option in dhcp_options:
@@ -87,6 +84,7 @@ def get_routing_table(router_ip):
 
 # Get interfaces IPs
 def get_interface_ips(ip):
+    index = 1
     router_interfaces = set()
     print(f"Interfaces:")
     for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
@@ -102,9 +100,10 @@ def get_interface_ips(ip):
                                 file=sys.stderr)
             break
         else:
-            for index, varBind in enumerate(varBinds):
-                print(f"{index + 1}: {varBind[1].prettyPrint()}")
+            for varBind in enumerate(varBinds):
+                print(f"{index}: {varBind[1].prettyPrint()}")
                 router_interfaces.add(varBind[1].prettyPrint())
+                index = index + 1
     return router_interfaces
 
 
@@ -134,13 +133,15 @@ def find_topology():
     print("----------------- Finding topology -----------------")
     while neighbors_to_process:
         ip = neighbors_to_process.pop()
-        print(f"Processing: {ip}")
         hostname = snmp_get_hostname(ip)
         if hostname is None:
             print(f"IP {ip} is not valid. Skiping.")
             continue
+
+        print(f"Processing router {hostname}: {ip}")
+        
         if hostname in all_routers:
-            print(f"Router {hostname} was already processed. Skiping")
+            #print(f"Router {hostname} was already processed. Skiping")
             continue
         
         all_routers.append(hostname)
