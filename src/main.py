@@ -102,8 +102,8 @@ def get_interface_ips(ip):
             break
         else:
             for varBind in varBinds:
-                print(f"interface: {varBind[1]}")
-                router_interfaces.add(varBind[1])
+                print(f"interface: {varBind[1].prettyPrint()}")
+                router_interfaces.add(varBind[1].prettyPrint())
     return router_interfaces
 
 
