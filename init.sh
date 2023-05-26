@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Bash script to prepare PC node
+
 # Update package repositories
 apt-get update
 
