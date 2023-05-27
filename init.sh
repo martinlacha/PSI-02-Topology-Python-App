@@ -8,11 +8,11 @@ apt-get update
 # Install Git
 apt-get install -y git
 
-# Create the "mlacha" directory and navigate into it
-mkdir /home/mlacha
+# Create the "psi-task2" directory and navigate into it
+mkdir /home/psi-task2
 
 # Change to the /home directory
-cd /home/mlacha
+cd /home/psi-task2
 
 # Clone the repository from GitHub
 git clone https://github.com/martinlacha/PSI-02-Topology-Python-App.git
